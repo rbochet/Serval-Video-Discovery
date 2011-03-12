@@ -119,6 +119,13 @@ public class VideoDiscoveryActivity extends Activity {
 		// Set hook for the high_fr
 		((Button) findViewById(R.id.high_fr))
 				.setOnClickListener(high_frCallback);
+		
+		// Disable buttons as they shouldn't be used when video doesn't run.
+		((Button) findViewById(R.id.low_fr)).setEnabled(false);
+		((Button) findViewById(R.id.high_fr)).setEnabled(false);
+		((Button) findViewById(R.id.low_res)).setEnabled(false);
+		((Button) findViewById(R.id.high_res)).setEnabled(false);
+
 	}
 
 	/**
@@ -131,6 +138,10 @@ public class VideoDiscoveryActivity extends Activity {
 				Log.v(TAG, "Toggle video on");
 				try {
 					camcorderView.startRecording();
+					((Button) findViewById(R.id.low_fr)).setEnabled(true);
+					((Button) findViewById(R.id.high_fr)).setEnabled(true);
+					((Button) findViewById(R.id.low_res)).setEnabled(true);
+					((Button) findViewById(R.id.high_res)).setEnabled(true);
 				} catch (Exception e) {
 					Log.e(TAG, "Error : can't start");
 					e.printStackTrace();
@@ -139,6 +150,10 @@ public class VideoDiscoveryActivity extends Activity {
 			} else { // Disabled
 				Log.v(TAG, "Toggle video off");
 				camcorderView.stopRecording();
+				((Button) findViewById(R.id.low_fr)).setEnabled(false);
+				((Button) findViewById(R.id.high_fr)).setEnabled(false);
+				((Button) findViewById(R.id.low_res)).setEnabled(false);
+				((Button) findViewById(R.id.high_res)).setEnabled(false);
 			}
 			videoFlag = !videoFlag;
 		}
