@@ -2,6 +2,7 @@ package org.servalproject.svd;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.media.CamcorderProfile;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,6 +26,67 @@ public class VideoDiscoveryActivity extends Activity {
 	 */
 	private boolean videoFlag = false;
 
+	/**
+	 * Change the resolution to the lowest one
+	 */
+	private OnClickListener low_resCallback = new OnClickListener() {
+		public void onClick(View v) {
+			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
+			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
+			
+			Log.v(TAG, "Def. set (low): " + width + "x" + height);
+			
+			camcorderView.setDefinition(width, height);		}
+	};
+
+	/**
+	 * Change the resolution to the highest one
+	 */
+	private OnClickListener high_resCallback = new OnClickListener() {
+		public void onClick(View v) {
+			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameHeight;
+			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameWidth;
+			
+			width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
+			height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
+
+			
+			Log.v(TAG, "Def. set (high): " + width + "x" + height);
+			
+			camcorderView.setDefinition(width, height);
+		}
+	};
+
+	/**
+	 * Change the frame rate to the lowest one
+	 */
+	private OnClickListener low_frCallback = new OnClickListener() {
+		public void onClick(View v) {
+			Log.v(TAG,
+					"Frame rate set (low): "
+							+ CamcorderProfile
+									.get(CamcorderProfile.QUALITY_LOW).videoFrameRate);
+
+			camcorderView.setFrameRate(CamcorderProfile
+					.get(CamcorderProfile.QUALITY_LOW).videoFrameRate);
+		}
+	};
+
+	/**
+	 * Change the frame rat to the highest one
+	 */
+	private OnClickListener high_frCallback = new OnClickListener() {
+		public void onClick(View v) {
+			Log.v(TAG,
+					"Frame rate set (high): "
+							+ CamcorderProfile
+									.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
+
+			camcorderView.setFrameRate(CamcorderProfile
+					.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
+		}
+	};
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,18 +100,33 @@ public class VideoDiscoveryActivity extends Activity {
 		camcorderView = (CamView) findViewById(R.id.camera_preview);
 
 		// File where the file will be saved
-		String file = Environment.getExternalStorageDirectory().getAbsolutePath();
+		String file = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
 		file += "/record.3gp";
-		
 		camcorderView.setOutputFile(file);
 
 		// Set the hook for the toggle button
 		((Button) findViewById(R.id.toggleVideo))
 				.setOnClickListener(toggleVideoCallback);
+
+		// Set hook for the low_res
+		((Button) findViewById(R.id.low_res))
+				.setOnClickListener(low_resCallback);
+
+		// Set hook for the high_res
+		((Button) findViewById(R.id.high_res))
+				.setOnClickListener(high_resCallback);
+
+		// Set hook for the low_fr
+		((Button) findViewById(R.id.low_fr)).setOnClickListener(low_frCallback);
+
+		// Set hook for the high_fr
+		((Button) findViewById(R.id.high_fr))
+				.setOnClickListener(high_frCallback);
 	}
 
 	/**
-	 * A call-back for when the user send me.
+	 * A call-back for when the user enable the video
 	 */
 	OnClickListener toggleVideoCallback = new OnClickListener() {
 
