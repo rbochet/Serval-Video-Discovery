@@ -47,10 +47,6 @@ public class VideoDiscoveryActivity extends Activity {
 			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameHeight;
 			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameWidth;
 			
-			width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
-			height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
-
-			
 			Log.v(TAG, "Def. set (high): " + width + "x" + height);
 			
 			camcorderView.setDefinition(width, height);
@@ -73,7 +69,7 @@ public class VideoDiscoveryActivity extends Activity {
 	};
 
 	/**
-	 * Change the frame rat to the highest one
+	 * Change the frame rate to the highest one
 	 */
 	private OnClickListener high_frCallback = new OnClickListener() {
 		public void onClick(View v) {
