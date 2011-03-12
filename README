@@ -1,1 +1,3 @@
 A small application developed to take control of the camera and its parameters in Android.
+
+For the moment, the video need to be OFF when the application is sent to background or close.
