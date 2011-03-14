@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Serval Video Discovery application. Use the button to interact.</string>
     <string name="app_name">Serval Video Discovery</string>
+    <string name="service_control_name">Serval Video Control Service</string>
 </resources>
