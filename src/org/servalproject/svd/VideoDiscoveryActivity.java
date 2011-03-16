@@ -1,6 +1,7 @@
 package org.servalproject.svd;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.CamcorderProfile;
 import android.os.Bundle;
@@ -33,10 +34,11 @@ public class VideoDiscoveryActivity extends Activity {
 		public void onClick(View v) {
 			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
 			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
-			
+
 			Log.v(TAG, "Def. set (low): " + width + "x" + height);
-			
-			camcorderView.setDefinition(width, height);		}
+
+			camcorderView.setDefinition(width, height);
+		}
 	};
 
 	/**
@@ -46,9 +48,9 @@ public class VideoDiscoveryActivity extends Activity {
 		public void onClick(View v) {
 			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameHeight;
 			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameWidth;
-			
+
 			Log.v(TAG, "Def. set (high): " + width + "x" + height);
-			
+
 			camcorderView.setDefinition(width, height);
 		}
 	};
@@ -88,6 +90,10 @@ public class VideoDiscoveryActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		// Start the background service
+		Intent intent = new Intent(this, ControlService.class);
+		startService(intent);
 
 		// Set the screen horizontally
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -119,7 +125,7 @@ public class VideoDiscoveryActivity extends Activity {
 		// Set hook for the high_fr
 		((Button) findViewById(R.id.high_fr))
 				.setOnClickListener(high_frCallback);
-		
+
 		// Disable buttons as they shouldn't be used when video doesn't run.
 		((Button) findViewById(R.id.low_fr)).setEnabled(false);
 		((Button) findViewById(R.id.high_fr)).setEnabled(false);
