@@ -1,6 +1,7 @@
 package org.servalproject.svd;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.CamcorderProfile;
 import android.os.Bundle;
@@ -88,6 +89,9 @@ public class VideoDiscoveryActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		// Activate the service
+	      startService(new Intent(this, ControlService.class));
 
 		// Set the screen horizontally
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
