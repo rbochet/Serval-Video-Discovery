@@ -3,7 +3,6 @@ package org.servalproject.svd;
 import java.io.IOException;
 
 import android.content.Context;
-import android.database.MergeCursor;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.AttributeSet;
