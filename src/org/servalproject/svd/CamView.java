@@ -63,7 +63,6 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 		recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
 	}
 
-	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		recorder.setOutputFile(outputFile);
 		recorder.setPreviewDisplay(holder.getSurface());
@@ -85,12 +84,10 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 	}
 
-	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
 
