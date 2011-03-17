@@ -100,7 +100,7 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * Set a high definition
 	 */
-	public void setHighDefinition() {
+	public synchronized void setHighDefinition() {
 		int width = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameHeight;
 		int height = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameWidth;
 		
@@ -110,14 +110,14 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * Set a high frame rate
 	 */
-	public void setHighFrameRate() {
+	public synchronized void setHighFrameRate() {
 		setFrameRate(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
 	}
 
 	/**
 	 * Set a low definition
 	 */
-	public void setLowDefinition() {
+	public synchronized void setLowDefinition() {
 		int width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
 		int height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
 
@@ -127,7 +127,7 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * Set a low frame rate
 	 */
-	public void setLowFrameRate() {
+	public synchronized void setLowFrameRate() {
 		setFrameRate(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameRate);
 	}
 
@@ -156,7 +156,7 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * Start the recording. Reset all the parameters before
 	 */
-	public void startRecording() {
+	public synchronized void startRecording() {
 		recorder.reset();
 		setupSourceEncoder();
 		prepare();
@@ -167,7 +167,7 @@ public class CamView extends SurfaceView implements SurfaceHolder.Callback {
 	 * Stop recording. Release the camera, and reinit the preview. Need it to
 	 * restart cleanly.
 	 */
-	public void stopRecording() {
+	public synchronized void stopRecording() {
 		recorder.stop();
 		recorder.release();
 		recorder = new MediaRecorder();

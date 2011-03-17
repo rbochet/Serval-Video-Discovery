@@ -120,14 +120,16 @@ public class VideoDiscoveryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		// Activate the service
-		startService(new Intent(this, ControlService.class));
-
 		// Set the screen horizontally
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		// Set up the preview and the camera
 		camcorderView = (CamView) findViewById(R.id.camera_preview);
+		
+		// Activate the service
+		startService(new Intent(this, ControlService.class));
+		// Now that the service runs, getInstance should return the instance
+		ControlService.GetInstance().setCamView(camcorderView);
 
 		// File where the file will be saved
 		String file = Environment.getExternalStorageDirectory()

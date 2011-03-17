@@ -12,6 +12,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * This Class is a Singleton.
+ */
 public class ControlService extends Service {
 
 	/**
@@ -28,6 +31,11 @@ public class ControlService extends Service {
 	 * The service instance, to be used as a ~singleton
 	 */
 	private static ControlService instance = null;
+
+	/**
+	 * The camcoc
+	 */
+	private CamView camcorderView;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -99,27 +107,24 @@ public class ControlService extends Service {
 					switch (request) {
 					case MessageTypes.HD:
 						Log.v(TAG, "Switch to HD requested");
+						camcorderView.setHighDefinition();
 						break;
 					case MessageTypes.LD:
-
+						camcorderView.setLowDefinition();
 						break;
 					case MessageTypes.HF:
-
+						camcorderView.setHighFrameRate();
 						break;
 					case MessageTypes.LF:
-
+						camcorderView.setLowFrameRate();
 						break;
 					case MessageTypes.START_STREAM:
-
 						break;
 					case MessageTypes.STOP_STREAM:
-
 						break;
 					case MessageTypes.KEEP_PACKETS:
-
 						break;
 					case MessageTypes.RELEASE_PACKETS:
-
 						break;
 					default:
 						Log.e(TAG, "Received unknown message type");
@@ -152,11 +157,19 @@ public class ControlService extends Service {
 	 * Get this service instance. If the instance does not exist, do not
 	 * instanciate the service, but return null.
 	 * 
-	 * @return the instance (or null)
+	 * @return the instance (or null)	
 	 */
 	public static ControlService GetInstance() {
 		return ControlService.instance;
 
+	}
+
+	/**
+	 * Register the camCorder view (will be launch / stop / alter parameters)
+	 * @param camcorderView
+	 */
+	public void setCamView(CamView camcorderView) {
+		this.camcorderView = camcorderView;
 	}
 
 }
