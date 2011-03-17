@@ -24,6 +24,11 @@ public class ControlService extends Service {
 	 */
 	public static final int PORT = 6666;
 
+	/**
+	 * The service instance, to be used as a ~singleton
+	 */
+	private static ControlService instance;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -33,6 +38,9 @@ public class ControlService extends Service {
 	public void onCreate() {
 		Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();
 		Log.d(TAG, "onCreate");
+
+		// Define the class as a singleton
+		ControlService.instance = this;
 
 		startServer();
 	}
@@ -138,6 +146,16 @@ public class ControlService extends Service {
 	public void onStart(Intent intent, int startid) {
 		Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
 		Log.d(TAG, "onStart");
+	}
+
+	/**
+	 * Get this service instance
+	 * 
+	 * @return the instance
+	 */
+	public static ControlService GetInstance() {
+		return ControlService.instance;
+
 	}
 
 }
