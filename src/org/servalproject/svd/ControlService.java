@@ -38,8 +38,8 @@ public class ControlService extends Service {
 	}
 
 	/**
-	 * Start the command server. 
-	 * Open a socket on the port 6666, and launch a TCP server which wait for the clients.
+	 * Start the command server. Open a socket on the port 6666, and launch a
+	 * TCP server which wait for the clients.
 	 */
 	private void startServer() {
 		Log.d(TAG, "start Server");
@@ -47,26 +47,28 @@ public class ControlService extends Service {
 		try {
 			new Thread(new Runnable() {
 				ServerSocket ss = new ServerSocket(ControlService.PORT);
+
 				// Run method
 				public void run() {
 					try {
 						Boolean end = false;
-						// Run forever 
+						// Run forever
 						while (!end) {
 							Log.v(TAG, "waiting for a connection.");
 							Socket s = ss.accept();
-							
+
 							// Read the socket
-						    InputStream in = s.getInputStream();
-						    DataInputStream dis = new DataInputStream(in);
-						    byte request = dis.readByte(); 
-						    String address = s.getInetAddress().getHostAddress();
-						    						    
-						    // Close the socket
+							InputStream in = s.getInputStream();
+							DataInputStream dis = new DataInputStream(in);
+							byte request = dis.readByte();
+							String address = s.getInetAddress()
+									.getHostAddress();
+
+							// Close the socket
 							s.close();
-							
-						    // Process the request
-						    processRequest(address, request);
+
+							// Process the request
+							processRequest(address, request);
 						}
 						ss.close();
 					} catch (IOException e) {
@@ -74,39 +76,49 @@ public class ControlService extends Service {
 					}
 
 				}
+
+				/**
+				 * Process a request received from the network.
+				 * 
+				 * @param address
+				 *            The sender's IP address
+				 * @param request
+				 *            The request
+				 */
 				private void processRequest(String address, byte request) {
-					Log.v(TAG, "request received :"+request+" from "+address);
+					Log.v(TAG, "request received :" + request + " from "
+							+ address);
 					switch (request) {
 					case MessageTypes.HD:
 						Log.v(TAG, "Switch to HD requested");
 						break;
 					case MessageTypes.LD:
-						
+
 						break;
 					case MessageTypes.HF:
-						
+
 						break;
 					case MessageTypes.LF:
-						
+
 						break;
 					case MessageTypes.START_STREAM:
-						
+
 						break;
 					case MessageTypes.STOP_STREAM:
-						
+
 						break;
 					case MessageTypes.KEEP_PACKETS:
-						
+
 						break;
 					case MessageTypes.RELEASE_PACKETS:
-						
+
 						break;
 					default:
 						Log.e(TAG, "Received unknown message type");
 						break;
 					}
 					Log.v(TAG, "Request processed");
-					
+
 				}
 			}).start();
 		} catch (IOException e) {
