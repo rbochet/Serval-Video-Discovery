@@ -1,5 +1,7 @@
 package org.servalproject.svd;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -89,7 +91,7 @@ public class VideoDiscoveryActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+				
 		// Activate the service
 	      startService(new Intent(this, ControlService.class));
 
