@@ -59,13 +59,14 @@ public class ControlService extends Service {
 							// Read the socket
 						    InputStream in = s.getInputStream();
 						    DataInputStream dis = new DataInputStream(in);
-						    byte request = dis.readByte(); 	
-						    
+						    byte request = dis.readByte(); 
+						    String address = s.getInetAddress().getHostAddress();
+						    						    
 						    // Close the socket
 							s.close();
 							
 						    // Process the request
-						    processRequest(request);
+						    processRequest(address, request);
 						}
 						ss.close();
 					} catch (IOException e) {
@@ -73,8 +74,39 @@ public class ControlService extends Service {
 					}
 
 				}
-				private void processRequest(byte request) {
-					Log.v(TAG, "REQUEST RCVD :"+request);
+				private void processRequest(String address, byte request) {
+					Log.v(TAG, "request received :"+request+" from "+address);
+					switch (request) {
+					case MessageTypes.HD:
+						Log.v(TAG, "Switch to HD requested");
+						break;
+					case MessageTypes.LD:
+						
+						break;
+					case MessageTypes.HF:
+						
+						break;
+					case MessageTypes.LF:
+						
+						break;
+					case MessageTypes.START_STREAM:
+						
+						break;
+					case MessageTypes.STOP_STREAM:
+						
+						break;
+					case MessageTypes.KEEP_PACKETS:
+						
+						break;
+					case MessageTypes.RELEASE_PACKETS:
+						
+						break;
+					default:
+						Log.e(TAG, "Received unknown message type");
+						break;
+					}
+					Log.v(TAG, "Request processed");
+					
 				}
 			}).start();
 		} catch (IOException e) {
