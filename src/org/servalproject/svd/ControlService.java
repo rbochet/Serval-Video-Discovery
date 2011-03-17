@@ -27,7 +27,7 @@ public class ControlService extends Service {
 	/**
 	 * The service instance, to be used as a ~singleton
 	 */
-	private static ControlService instance;
+	private static ControlService instance = null;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -149,9 +149,10 @@ public class ControlService extends Service {
 	}
 
 	/**
-	 * Get this service instance
+	 * Get this service instance. If the instance does not exist, do not
+	 * instanciate the service, but return null.
 	 * 
-	 * @return the instance
+	 * @return the instance (or null)
 	 */
 	public static ControlService GetInstance() {
 		return ControlService.instance;
