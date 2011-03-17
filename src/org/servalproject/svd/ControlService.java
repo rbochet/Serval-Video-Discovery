@@ -1,12 +1,10 @@
 package org.servalproject.svd;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import android.app.Service;
 import android.content.Intent;
@@ -40,7 +38,8 @@ public class ControlService extends Service {
 	}
 
 	/**
-	 * Start the command server. Open a socket on the port PORT.
+	 * Start the command server. 
+	 * Open a socket on the port 6666, and launch a TCP server which wait for the clients.
 	 */
 	private void startServer() {
 		Log.d(TAG, "start Server");
@@ -56,17 +55,26 @@ public class ControlService extends Service {
 						while (!end) {
 							Log.v(TAG, "waiting for a connection.");
 							Socket s = ss.accept();
-							BufferedReader input = new BufferedReader(
-									new InputStreamReader(s.getInputStream()));
-							String rcvd = input.readLine();
-							Log.v(TAG, "From client: " + rcvd);
+							
+							// Read the socket
+						    InputStream in = s.getInputStream();
+						    DataInputStream dis = new DataInputStream(in);
+						    byte request = dis.readByte(); 	
+						    
+						    // Close the socket
 							s.close();
+							
+						    // Process the request
+						    processRequest(request);
 						}
 						ss.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
+				}
+				private void processRequest(byte request) {
+					Log.v(TAG, "REQUEST RCVD :"+request);
 				}
 			}).start();
 		} catch (IOException e) {
