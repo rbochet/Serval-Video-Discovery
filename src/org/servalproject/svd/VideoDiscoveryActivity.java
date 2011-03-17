@@ -1,7 +1,5 @@
 package org.servalproject.svd;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,31 +13,27 @@ import android.widget.Button;
 
 public class VideoDiscoveryActivity extends Activity {
 	/**
-	 * The camera handling class (manage also the surface)
-	 */
-	private CamView camcorderView;
-
-	/**
 	 * Debug Tag
 	 */
 	public static final String TAG = "SVD";
 
 	/**
-	 * Video flag
+	 * The camera handling class (manage also the surface)
 	 */
-	private boolean videoFlag = false;
+	private CamView camcorderView;
 
 	/**
-	 * Change the resolution to the lowest one
+	 * Change the frame rate to the highest one
 	 */
-	private OnClickListener low_resCallback = new OnClickListener() {
+	private OnClickListener high_frCallback = new OnClickListener() {
 		public void onClick(View v) {
-			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
-			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
-			
-			Log.v(TAG, "Def. set (low): " + width + "x" + height);
-			
-			camcorderView.setDefinition(width, height);		}
+			Log.v(TAG,
+					"Frame rate set (high): "
+							+ CamcorderProfile
+									.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
+
+			camcorderView.setHighFrameRate();
+		}
 	};
 
 	/**
@@ -49,10 +43,10 @@ public class VideoDiscoveryActivity extends Activity {
 		public void onClick(View v) {
 			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameHeight;
 			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH).videoFrameWidth;
-			
+
 			Log.v(TAG, "Def. set (high): " + width + "x" + height);
-			
-			camcorderView.setDefinition(width, height);
+
+			camcorderView.setHighDefinition();
 		}
 	};
 
@@ -66,73 +60,23 @@ public class VideoDiscoveryActivity extends Activity {
 							+ CamcorderProfile
 									.get(CamcorderProfile.QUALITY_LOW).videoFrameRate);
 
-			camcorderView.setFrameRate(CamcorderProfile
-					.get(CamcorderProfile.QUALITY_LOW).videoFrameRate);
+			camcorderView.setLowFrameRate();
 		}
 	};
 
 	/**
-	 * Change the frame rate to the highest one
+	 * Change the resolution to the lowest one
 	 */
-	private OnClickListener high_frCallback = new OnClickListener() {
+	private OnClickListener low_resCallback = new OnClickListener() {
 		public void onClick(View v) {
-			Log.v(TAG,
-					"Frame rate set (high): "
-							+ CamcorderProfile
-									.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
+			int width = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameHeight;
+			int height = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoFrameWidth;
 
-			camcorderView.setFrameRate(CamcorderProfile
-					.get(CamcorderProfile.QUALITY_HIGH).videoFrameRate);
+			Log.v(TAG, "Def. set (low): " + width + "x" + height);
+
+			camcorderView.setLowDefinition();
 		}
 	};
-
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-				
-		// Activate the service
-	      startService(new Intent(this, ControlService.class));
-
-		// Set the screen horizontally
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-		// Set up the preview and the camera
-		camcorderView = (CamView) findViewById(R.id.camera_preview);
-
-		// File where the file will be saved
-		String file = Environment.getExternalStorageDirectory()
-				.getAbsolutePath();
-		file += "/record.3gp";
-		camcorderView.setOutputFile(file);
-
-		// Set the hook for the toggle button
-		((Button) findViewById(R.id.toggleVideo))
-				.setOnClickListener(toggleVideoCallback);
-
-		// Set hook for the low_res
-		((Button) findViewById(R.id.low_res))
-				.setOnClickListener(low_resCallback);
-
-		// Set hook for the high_res
-		((Button) findViewById(R.id.high_res))
-				.setOnClickListener(high_resCallback);
-
-		// Set hook for the low_fr
-		((Button) findViewById(R.id.low_fr)).setOnClickListener(low_frCallback);
-
-		// Set hook for the high_fr
-		((Button) findViewById(R.id.high_fr))
-				.setOnClickListener(high_frCallback);
-		
-		// Disable buttons as they shouldn't be used when video doesn't run.
-		((Button) findViewById(R.id.low_fr)).setEnabled(false);
-		((Button) findViewById(R.id.high_fr)).setEnabled(false);
-		((Button) findViewById(R.id.low_res)).setEnabled(false);
-		((Button) findViewById(R.id.high_res)).setEnabled(false);
-
-	}
 
 	/**
 	 * A call-back for when the user enable the video
@@ -164,4 +108,57 @@ public class VideoDiscoveryActivity extends Activity {
 			videoFlag = !videoFlag;
 		}
 	};
+
+	/**
+	 * Video flag
+	 */
+	private boolean videoFlag = false;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		// Activate the service
+		startService(new Intent(this, ControlService.class));
+
+		// Set the screen horizontally
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+		// Set up the preview and the camera
+		camcorderView = (CamView) findViewById(R.id.camera_preview);
+
+		// File where the file will be saved
+		String file = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
+		file += "/record.3gp";
+		camcorderView.setOutputFile(file);
+
+		// Set the hook for the toggle button
+		((Button) findViewById(R.id.toggleVideo))
+				.setOnClickListener(toggleVideoCallback);
+
+		// Set hook for the low_res
+		((Button) findViewById(R.id.low_res))
+				.setOnClickListener(low_resCallback);
+
+		// Set hook for the high_res
+		((Button) findViewById(R.id.high_res))
+				.setOnClickListener(high_resCallback);
+
+		// Set hook for the low_fr
+		((Button) findViewById(R.id.low_fr)).setOnClickListener(low_frCallback);
+
+		// Set hook for the high_fr
+		((Button) findViewById(R.id.high_fr))
+				.setOnClickListener(high_frCallback);
+
+		// Disable buttons as they shouldn't be used when video doesn't run.
+		((Button) findViewById(R.id.low_fr)).setEnabled(false);
+		((Button) findViewById(R.id.high_fr)).setEnabled(false);
+		((Button) findViewById(R.id.low_res)).setEnabled(false);
+		((Button) findViewById(R.id.high_res)).setEnabled(false);
+
+	}
 }
