@@ -44,28 +44,34 @@ public class ControlService extends Service {
 	 */
 	private void startServer() {
 		Log.d(TAG, "start Server");
-		try {
-			Boolean end = false;
-			ServerSocket ss = new ServerSocket(this.PORT);
-			while (!end) {
-				Log.v(TAG, "waiting for a connection.");
-				Socket s = ss.accept();
-				BufferedReader input = new BufferedReader(
-						new InputStreamReader(s.getInputStream()));
-				String rcvd = input.readLine();
-				Log.v(TAG, "From client: " + rcvd);
-				s.close();
-			}
-			ss.close();
 
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		try {
+			new Thread(new Runnable() {
+				ServerSocket ss = new ServerSocket(ControlService.PORT);
+				// Run method
+				public void run() {
+					try {
+						Boolean end = false;
+						// Run forever 
+						while (!end) {
+							Log.v(TAG, "waiting for a connection.");
+							Socket s = ss.accept();
+							BufferedReader input = new BufferedReader(
+									new InputStreamReader(s.getInputStream()));
+							String rcvd = input.readLine();
+							Log.v(TAG, "From client: " + rcvd);
+							s.close();
+						}
+						ss.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}).start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "Thread error");
 			e.printStackTrace();
-		} finally {
-			Log.d(TAG, "End of service");
 		}
 
 	}
